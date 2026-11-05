@@ -24,10 +24,10 @@ export default function CleaningOverview() {
         </div>
         <Link
           href="/housekeeping"
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 rounded-xl text-xs font-semibold transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600/20 hover:bg-amber-600/30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 text-amber-300 border border-amber-500/30 rounded-xl text-xs font-semibold transition-colors"
         >
           <Camera className="w-3.5 h-3.5" />
-          <span>청소 모바일 모드 &rarr;</span>
+          <span>청소 모바일 모드</span>
         </Link>
       </div>
 
@@ -77,7 +77,7 @@ export default function CleaningOverview() {
             className="p-3 rounded-xl border border-amber-900/40 bg-amber-950/10 flex items-center justify-between gap-2"
           >
             <div className="flex items-center gap-2.5">
-              <span className="text-xs font-black text-white px-2 py-0.5 rounded bg-amber-900/60 border border-amber-700 animate-pulse">
+              <span className="text-xs font-black text-white px-2 py-0.5 rounded bg-amber-900/60 border border-amber-700 motion-safe:animate-pulse">
                 {room.number}호
               </span>
               <div>

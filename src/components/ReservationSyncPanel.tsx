@@ -77,21 +77,21 @@ export default function ReservationSyncPanel() {
             <Calendar className="w-5 h-5 text-blue-400" />
             예약 플랫폼 실시간 싱크
           </h2>
-          <p className="text-xs text-slate-400">야놀자 · 여기어때 · 아고다 · 네이버 연동</p>
+          <p className="text-xs text-slate-400">야놀자, 여기어때, 아고다, 네이버 실시간 연동</p>
         </div>
 
         <div className="flex items-center gap-2">
           {/* 자동 싱크 토글 */}
           <button
             onClick={() => setAutoSync(!autoSync)}
-            className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition ${
+            className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
               autoSync
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 ring-1 ring-emerald-500'
                 : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-white'
             }`}
             title="30초마다 자동으로 새로운 예약 싱크"
           >
-            <span className={`w-1.5 h-1.5 rounded-full ${autoSync ? 'bg-emerald-400 animate-ping' : 'bg-slate-500'}`}></span>
+            <span className={`w-1.5 h-1.5 rounded-full ${autoSync ? 'bg-emerald-400 motion-safe:animate-ping' : 'bg-slate-500'}`}></span>
             <span>{autoSync ? '자동연동 ON' : '자동연동'}</span>
           </button>
 
@@ -99,9 +99,9 @@ export default function ReservationSyncPanel() {
           <button
             onClick={handleSync}
             disabled={isSyncing}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition disabled:opacity-50 shadow-md shadow-blue-900/30"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white rounded-xl text-xs font-bold transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 shadow-md shadow-blue-900/30"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'motion-safe:animate-spin' : ''}`} />
             <span>{isSyncing ? '동기화중' : '지금 싱크'}</span>
           </button>
         </div>

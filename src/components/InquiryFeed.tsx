@@ -209,9 +209,9 @@ export default function InquiryFeed() {
                           key={tIdx}
                           type="button"
                           onClick={() => setReplyDrafts({ ...replyDrafts, [inq.id]: tpl })}
-                          className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 transition"
+                          className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-slate-300 border border-slate-700/80 transition-colors"
                         >
-                          {tpl.slice(0, 16)}...
+                          {tpl.slice(0, 16)}…
                         </button>
                       ))}
                     </div>

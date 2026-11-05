@@ -7,6 +7,7 @@ import {
   Camera,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
   ArrowLeft,
   Upload,
   RefreshCw,
@@ -164,8 +165,9 @@ export default function HousekeepingPage() {
 
                 {/* 특이사항 안내 */}
                 {room.notes.length > 0 && (
-                  <div className="text-[11px] text-amber-300 bg-amber-950/40 p-2 rounded-lg border border-amber-800/40">
-                    ⚠️ {room.notes.join(' / ')}
+                  <div className="flex items-center gap-1.5 text-[11px] text-amber-300 bg-amber-950/40 p-2 rounded-lg border border-amber-800/40">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <span>{room.notes.join(' / ')}</span>
                   </div>
                 )}
 
@@ -270,12 +272,12 @@ export default function HousekeepingPage() {
               <button
                 onClick={handleRunAiInspection}
                 disabled={isAnalyzing}
-                className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-blue-900/40 disabled:opacity-50"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-900/40 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
               >
                 {isAnalyzing ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin text-purple-300" />
-                    <span>AI 비전 심층 판독 중...</span>
+                    <RefreshCw className="w-4 h-4 motion-safe:animate-spin text-purple-300" />
+                    <span>AI 비전 심층 판독 중…</span>
                   </>
                 ) : (
                   <>

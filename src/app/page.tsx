@@ -106,7 +106,7 @@ export default function Home() {
             <div
               className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
                 pendingRequests > 0
-                  ? 'bg-rose-600/20 text-rose-400 border-rose-500/30 animate-pulse'
+                  ? 'bg-rose-600/20 text-rose-400 border-rose-500/30 motion-safe:animate-pulse'
                   : 'bg-slate-800 text-slate-400 border-slate-700'
               }`}
             >

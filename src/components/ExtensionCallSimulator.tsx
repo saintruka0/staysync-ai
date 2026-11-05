@@ -32,7 +32,7 @@ export default function ExtensionCallSimulator({ onClose }: ExtensionCallSimulat
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm motion-safe:animate-fadeIn">
       <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
         {/* 헤더 */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
@@ -47,7 +47,7 @@ export default function ExtensionCallSimulator({ onClose }: ExtensionCallSimulat
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -57,7 +57,7 @@ export default function ExtensionCallSimulator({ onClose }: ExtensionCallSimulat
         <div className="p-6 overflow-y-auto space-y-6 text-sm text-slate-300">
           {/* 1. 내선 전화 수신 시뮬레이션 패널 */}
           <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 space-y-3">
-            <span className="text-xs font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
               <PhoneForwarded className="w-4 h-4 text-indigo-400" />
               내선 전화 수신 시뮬레이터
             </span>
@@ -87,24 +87,24 @@ export default function ExtensionCallSimulator({ onClose }: ExtensionCallSimulat
                 <button
                   type="submit"
                   disabled={isCalling}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 disabled:opacity-50 shadow-md shadow-indigo-600/20"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 shrink-0 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 shadow-md shadow-indigo-600/20"
                 >
-                  <PhoneCall className={`w-3.5 h-3.5 ${isCalling ? 'animate-pulse text-indigo-300' : ''}`} />
+                  <PhoneCall className={`w-3.5 h-3.5 ${isCalling ? 'motion-safe:animate-pulse text-indigo-300' : ''}`} />
                   <span>{isCalling ? '응대 분석중...' : '수신 시뮬레이션'}</span>
                 </button>
               </div>
 
               {/* 빠른 질문 칩들 */}
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex wrap gap-1.5">
                 <span className="text-[11px] text-slate-400 mr-1 py-0.5">자주 오는 문의 예시:</span>
                 {sampleQuestions.map((q, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => setCallerQuestion(q)}
-                    className="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 hover:bg-slate-700 text-slate-300 border border-slate-700/60 transition"
+                    className="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 hover:bg-slate-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-slate-300 border border-slate-700/60 transition-colors"
                   >
-                    {q.slice(0, 18)}...
+                    {q.slice(0, 18)}…
                   </button>
                 ))}
               </div>
@@ -114,7 +114,7 @@ export default function ExtensionCallSimulator({ onClose }: ExtensionCallSimulat
           {/* 2. 최근 내선 통화 로그 & AI 추천 스크립트 */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
                 <Clock className="w-4 h-4 text-slate-400" />
                 최근 내선 통화 내역 ({callLogs.length}건)
               </span>

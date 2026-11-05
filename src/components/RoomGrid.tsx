@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useMotel } from '@/context/MotelContext';
 import { Room, RoomStatus } from '@/types/motel';
 import RoomDetailModal from './RoomDetailModal';
-import { User, Sparkles, AlertTriangle, CheckCircle2, BedDouble, ShieldAlert } from 'lucide-react';
+import { User, Sparkles, AlertTriangle, CheckCircle2, BedDouble, ShieldAlert, Gamepad2, Bath } from 'lucide-react';
 
 export default function RoomGrid() {
   const { rooms } = useMotel();
@@ -148,7 +148,7 @@ export default function RoomGrid() {
                       <div
                         key={room.id}
                         onClick={() => setActiveModalRoom(room)}
-                        className={`group relative p-3.5 rounded-2xl border border-slate-800 hover:border-slate-700 ${cfg.cardBg} cursor-pointer transition-all duration-150 hover:shadow-lg flex flex-col justify-between`}
+                        className={`group relative p-3.5 rounded-2xl border border-slate-800 hover:border-slate-700 ${cfg.cardBg} cursor-pointer transition-colors duration-150 motion-reduce:transition-none hover:shadow-lg flex flex-col justify-between`}
                       >
                         {/* 상단: 호실 번호 & 상태 뱃지 */}
                         <div className="flex items-start justify-between gap-1 mb-2">
@@ -161,8 +161,16 @@ export default function RoomGrid() {
                               <span className="text-xs text-slate-300 font-medium truncate max-w-[110px]">
                                 {room.type}
                               </span>
-                              {isGaming && <span title="게이밍 PC 구비">🎮</span>}
-                              {isSpa && <span title="스파 욕조 구비">🛁</span>}
+                              {isGaming && (
+                                <span title="게이밍 PC 구비">
+                                  <Gamepad2 className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                                </span>
+                              )}
+                              {isSpa && (
+                                <span title="스파 욕조 구비">
+                                  <Bath className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                                </span>
+                              )}
                             </div>
                           </div>
                           <span

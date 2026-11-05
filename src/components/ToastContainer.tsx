@@ -22,14 +22,14 @@ export default function ToastContainer() {
           borderClass = 'border-amber-500 bg-slate-900/95 text-white';
           Icon = AlertTriangle;
         } else if (toast.type === 'urgent') {
-          borderClass = 'border-rose-500 bg-slate-900/95 text-white animate-pulse';
+          borderClass = 'border-rose-500 bg-slate-900/95 text-white motion-safe:animate-pulse';
           Icon = AlertCircle;
         }
 
         return (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border shadow-2xl backdrop-blur-md transition-all duration-300 ${borderClass}`}
+            className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border shadow-2xl backdrop-blur-md motion-safe:transition-opacity motion-safe:transition-transform motion-reduce:transition-none duration-300 ${borderClass}`}
           >
             <div className="p-1 rounded-lg shrink-0 mt-0.5">
               <Icon className="w-5 h-5 text-current" />
@@ -47,16 +47,16 @@ export default function ToastContainer() {
                       undoCheckout();
                       dismissToast(toast.id);
                     }}
-                    className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition shadow-md"
+                    className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-colors shadow-md"
                   >
-                    ↩ 실행 취소 (복구)
+                    실행 취소 (복구)
                   </button>
                 </div>
               )}
             </div>
             <button
               onClick={() => dismissToast(toast.id)}
-              className="text-slate-400 hover:text-white p-0.5 transition-colors"
+              className="text-slate-400 hover:text-white active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 p-0.5 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

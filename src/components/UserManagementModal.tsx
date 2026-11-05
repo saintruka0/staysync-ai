@@ -51,7 +51,7 @@ export default function UserManagementModal({ onClose }: UserManagementModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm motion-safe:animate-fadeIn">
       <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
         {/* 헤더 */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
@@ -61,12 +61,12 @@ export default function UserManagementModal({ onClose }: UserManagementModalProp
             </div>
             <div>
               <h3 className="text-base font-bold text-white">직원 사용자 & 권한 관리 (RBAC)</h3>
-              <p className="text-xs text-slate-400">점주 · 프론트 데스크 · 하우스키핑 권한 체계</p>
+              <p className="text-xs text-slate-400">점주, 프론트 데스크, 하우스키핑 3단계 권한 체계</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
           >
             <X className="w-5 h-5" />
           </button>
@@ -89,7 +89,7 @@ export default function UserManagementModal({ onClose }: UserManagementModalProp
 
           {/* 등록된 직원 목록 */}
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
+            <span className="text-xs font-bold text-slate-400 block mb-2">
               등록된 직원 계정 목록 ({users.length}명)
             </span>
             <div className="space-y-2">
@@ -122,7 +122,7 @@ export default function UserManagementModal({ onClose }: UserManagementModalProp
 
           {/* 직원 추가 폼 */}
           <div className="bg-slate-800/80 border border-slate-700/80 rounded-xl p-4 space-y-3">
-            <span className="text-xs font-bold text-indigo-300 uppercase tracking-wider block">
+            <span className="text-xs font-bold text-indigo-300 block">
               신규 직원 계정 추가
             </span>
             <form onSubmit={handleAddUser} className="space-y-2.5">
@@ -157,7 +157,7 @@ export default function UserManagementModal({ onClose }: UserManagementModalProp
 
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow-md shadow-indigo-600/20"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 shrink-0 shadow-md shadow-indigo-600/20"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   계정 등록
@@ -171,7 +171,7 @@ export default function UserManagementModal({ onClose }: UserManagementModalProp
         <div className="px-6 py-3.5 bg-slate-900 border-t border-slate-800 flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition"
+            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 text-slate-200 rounded-xl text-xs font-semibold transition-colors"
           >
             닫기
           </button>

@@ -172,7 +172,7 @@ export default function RoomDetailModal({ room, onClose }: RoomDetailModalProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm motion-safe:animate-fadeIn">
       <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] relative">
         {/* 모달 헤더 */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
@@ -198,7 +198,7 @@ export default function RoomDetailModal({ room, onClose }: RoomDetailModalProps)
         <div className="p-6 overflow-y-auto space-y-6 text-sm text-slate-300">
           {/* 1. 상태 즉시 변경 버튼군 */}
           <div>
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">
+            <label className="text-xs font-semibold text-slate-400 block mb-2">
               객실 상태 변경
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -330,7 +330,7 @@ export default function RoomDetailModal({ room, onClose }: RoomDetailModalProps)
           {/* 4. 객실별 특이사항 / 주의 메모 */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <label className="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
                 <ShieldAlert className="w-4 h-4 text-amber-400" />
                 특이사항 / 고객 선호 / 주의 메모
               </label>
@@ -567,7 +567,7 @@ export default function RoomDetailModal({ room, onClose }: RoomDetailModalProps)
 
         {/* [P0 방어 가드레일]: 퇴실(체크아웃) 2차 확인 모달 */}
         {confirmCheckout && (
-          <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 motion-safe:animate-fadeIn">
             <div className="bg-slate-900 border border-amber-500/60 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center shrink-0">
@@ -582,9 +582,10 @@ export default function RoomDetailModal({ room, onClose }: RoomDetailModalProps)
               <div className="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
                 <div>• 현재 투숙객: <span className="font-bold text-white">{room.guestName}</span> ({room.platform || '일반'})</div>
                 <div>• 연락처: <span className="font-mono text-slate-200">{room.phone || '-'}</span></div>
-                <p className="text-[11px] text-amber-300 mt-2 font-medium">
-                  ⚠️ 퇴실 처리 시 투숙객 정보가 초기화되고 빈방(입실가능)으로 전환됩니다.
-                </p>
+                <div className="flex items-center gap-1.5 text-[11px] text-amber-300 mt-2 font-medium">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span>퇴실 처리 시 투숙객 정보가 초기화되고 빈방(입실가능)으로 전환됩니다.</span>
+                </div>
               </div>
 
               <div className="flex gap-2">

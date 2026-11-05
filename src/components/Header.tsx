@@ -27,7 +27,7 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
         {/* 로고 & 메인 타이틀 */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 border border-blue-400/40 flex items-center justify-center text-white shadow-lg shadow-blue-900/30 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-blue-600 border border-blue-400/40 flex items-center justify-center text-white shadow-lg shadow-blue-900/30 group-hover:scale-105 motion-safe:transition-transform motion-reduce:transition-none">
               <Building2 className="w-5 h-5" />
             </div>
             <div>
@@ -40,10 +40,10 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
                     e.stopPropagation();
                     onOpenDifyDiagnostics?.();
                   }}
-                  className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 hover:bg-blue-500/30 transition cursor-pointer"
+                  className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 hover:bg-blue-500/30 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 transition-colors cursor-pointer"
                   title="Dify v1 연결 상태 및 실시간 스트리밍 진단"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 motion-safe:animate-pulse"></span>
                   <span>Dify v1 연동</span>
                 </button>
               </div>
@@ -74,7 +74,7 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
           {(pendingInquiriesCount > 0 || pendingAmenitiesCount > 0) && (
             <>
               <span className="text-slate-600">|</span>
-              <div className="flex items-center gap-1.5 animate-pulse">
+              <div className="flex items-center gap-1.5 motion-safe:animate-pulse">
                 <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
                 <span className="text-rose-400 font-semibold">
                   미처리 요청: {pendingInquiriesCount + pendingAmenitiesCount}건
@@ -89,7 +89,7 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
           {/* 예약 싱크 버튼 */}
           <button
             onClick={() => syncReservations()}
-            className="flex items-center gap-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition"
+            className="flex items-center gap-1.5 text-xs bg-slate-800 hover:bg-slate-700 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors"
             title="야놀자/여기어때 예약 크롤링 동기화"
           >
             <RefreshCw className="w-3.5 h-3.5 text-cyan-400" />
@@ -100,7 +100,7 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
           {onOpenCallSimulator && (
             <button
               onClick={onOpenCallSimulator}
-              className="flex items-center gap-1.5 text-xs bg-indigo-950/60 hover:bg-indigo-900 text-indigo-200 px-3 py-1.5 rounded-lg border border-indigo-700/50 transition"
+              className="flex items-center gap-1.5 text-xs bg-indigo-950/60 hover:bg-indigo-900 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-indigo-200 px-3 py-1.5 rounded-lg border border-indigo-700/50 transition-colors"
               title="내선 전화 자동응대 테스트"
             >
               <PhoneCall className="w-3.5 h-3.5 text-indigo-400" />
@@ -112,7 +112,7 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
           <Link
             href="/guest?room=305"
             target="_blank"
-            className="flex items-center gap-1.5 text-xs bg-emerald-950/50 hover:bg-emerald-900/60 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-700/50 transition"
+            className="flex items-center gap-1.5 text-xs bg-emerald-950/50 hover:bg-emerald-900/60 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-700/50 transition-colors"
             title="305호 투숙객 QR 페이지 새 창 열기"
           >
             <QrCode className="w-3.5 h-3.5 text-emerald-400" />
@@ -122,7 +122,7 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
           {/* 청소 직원 모바일 링크 */}
           <Link
             href="/housekeeping"
-            className="flex items-center gap-1.5 text-xs bg-amber-950/50 hover:bg-amber-900/60 text-amber-300 px-3 py-1.5 rounded-lg border border-amber-700/50 transition"
+            className="flex items-center gap-1.5 text-xs bg-amber-950/50 hover:bg-amber-900/60 text-amber-300 px-3 py-1.5 rounded-lg border border-amber-700/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
             title="하우스키핑 전용 모바일 화면"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -136,7 +136,7 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
                 <User className="w-3 h-3 text-slate-400" />
                 {currentUser.name}
               </span>
-              <span className="text-[10px] text-slate-400 uppercase font-mono">
+              <span className="text-[10px] text-slate-400 font-mono">
                 {currentUser.role}
               </span>
             </div>

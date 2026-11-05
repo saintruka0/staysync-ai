@@ -19,6 +19,12 @@ import {
   Bot,
   User,
   Building2,
+  Bath,
+  Droplets,
+  Zap,
+  Shirt,
+  BedDouble,
+  Info,
 } from 'lucide-react';
 
 export default function GuestClient() {
@@ -159,7 +165,7 @@ export default function GuestClient() {
 
         {/* 비품 요청 성공 토스트 알림 */}
         {requestedItem && (
-          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white text-xs px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 transition-all duration-300 ring-2 ring-emerald-400/40">
+          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-600 text-white text-xs px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 motion-safe:transition-opacity motion-reduce:transition-none duration-300 ring-2 ring-emerald-400/40">
             <Check className="w-4 h-4" />
             <span>프론트에 [{requestedItem}] 요청이 전달되었습니다!</span>
           </div>
@@ -169,7 +175,7 @@ export default function GuestClient() {
         <div className="grid grid-cols-3 bg-slate-900/90 border-b border-slate-800 text-xs font-semibold p-1.5">
           <button
             onClick={() => setActiveTab('amenity')}
-            className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition ${
+            className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
               activeTab === 'amenity'
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
                 : 'text-slate-400 hover:text-white'
@@ -180,7 +186,7 @@ export default function GuestClient() {
           </button>
           <button
             onClick={() => setActiveTab('chat')}
-            className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition ${
+            className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
               activeTab === 'chat'
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
                 : 'text-slate-400 hover:text-white'
@@ -191,7 +197,7 @@ export default function GuestClient() {
           </button>
           <button
             onClick={() => setActiveTab('food')}
-            className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition ${
+            className={`py-2 rounded-xl flex items-center justify-center gap-1.5 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
               activeTab === 'food'
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
                 : 'text-slate-400 hover:text-white'
@@ -216,27 +222,29 @@ export default function GuestClient() {
 
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { title: '타올/수건 추가', detail: '깨끗한 수건 2장', icon: '🛁', item: '수건 2장' },
-                  { title: '생수 추가', detail: '시원한 생수 2병', icon: '💧', item: '생수 2병' },
-                  { title: '어메니티 키트', detail: '칫솔/치약/면도기', icon: '🪥', item: '일회용 어메니티 키트' },
-                  { title: '충전 케이블', detail: 'C타입 / 8핀 멀티', icon: '🔌', item: '고속 충전 케이블' },
-                  { title: '위생 가운', detail: '살균 세탁 가운 2벌', icon: '👘', item: '위생 가운 2벌' },
-                  { title: '베개 추가', detail: '폭신한 경추 베개', icon: '🛏️', item: '베개 1개' },
+                  { title: '타올/수건 추가', detail: '깨끗한 수건 2장', Icon: Bath, iconColor: 'text-cyan-400', item: '수건 2장' },
+                  { title: '생수 추가', detail: '시원한 생수 2병', Icon: Droplets, iconColor: 'text-blue-400', item: '생수 2병' },
+                  { title: '어메니티 키트', detail: '칫솔/치약/면도기', Icon: Sparkles, iconColor: 'text-amber-400', item: '일회용 어메니티 키트' },
+                  { title: '충전 케이블', detail: 'C타입 / 8핀 멀티', Icon: Zap, iconColor: 'text-yellow-400', item: '고속 충전 케이블' },
+                  { title: '위생 가운', detail: '살균 세탁 가운 2벌', Icon: Shirt, iconColor: 'text-purple-400', item: '위생 가운 2벌' },
+                  { title: '베개 추가', detail: '폭신한 경추 베개', Icon: BedDouble, iconColor: 'text-emerald-400', item: '베개 1개' },
                 ].map((amenity, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleAmenityClick(amenity.item)}
-                    className="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 hover:border-indigo-500/80 text-left transition flex flex-col justify-between group active:scale-95 shadow-md"
+                    className="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 hover:border-indigo-500/80 text-left transition-colors flex flex-col justify-between group active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 shadow-md"
                   >
-                    <div className="text-2xl mb-2">{amenity.icon}</div>
+                    <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center mb-2">
+                      <amenity.Icon className={`w-4 h-4 ${amenity.iconColor}`} />
+                    </div>
                     <div>
-                      <div className="text-xs font-bold text-white group-hover:text-indigo-300 transition">
+                      <div className="text-xs font-bold text-white group-hover:text-indigo-300 transition-colors">
                         {amenity.title}
                       </div>
                       <div className="text-[11px] text-slate-400 mt-0.5">{amenity.detail}</div>
                     </div>
                     <div className="mt-3 text-[10px] font-bold text-indigo-400 group-hover:underline">
-                      신청하기 &rarr;
+                      신청하기
                     </div>
                   </button>
                 ))}
@@ -244,7 +252,10 @@ export default function GuestClient() {
 
               {/* 안내 문구 */}
               <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
-                <div className="font-semibold text-slate-300">📌 객실 이용 안내</div>
+                <div className="flex items-center gap-1.5 font-semibold text-slate-300">
+                  <Info className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>객실 이용 안내</span>
+                </div>
                 <div>• 기본 퇴실 시간: 익일 12:00(정오)</div>
                 <div>• 레이트 체크아웃(퇴실 연장)은 프론트 승인이 필요합니다.</div>
                 <div>• 전 객실 금연 구역입니다.</div>
@@ -301,8 +312,8 @@ export default function GuestClient() {
                       <Bot className="w-3.5 h-3.5" />
                     </div>
                     <div className="p-3 bg-slate-800 rounded-2xl border border-slate-700/60 text-xs text-slate-400 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-                      답변을 확인하고 있습니다...
+                      <span className="w-2 h-2 rounded-full bg-indigo-400 motion-safe:animate-ping"></span>
+                      답변을 확인하고 있습니다…
                     </div>
                   </div>
                 )}
@@ -319,7 +330,7 @@ export default function GuestClient() {
                   <button
                     key={idx}
                     onClick={() => handleSendChat(q)}
-                    className="text-[11px] px-2.5 py-1 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+                    className="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-slate-300 hover:text-white border border-slate-700/70 transition-colors"
                   >
                     {q}
                   </button>
@@ -403,8 +414,11 @@ export default function GuestClient() {
                     </div>
 
                     {/* 추천 꿀팁 */}
-                    <div className="bg-indigo-950/30 p-2 rounded-lg border border-indigo-800/30 text-[11px] text-indigo-200">
-                      💡 <span className="font-medium">프론트 팁:</span> {place.tip}
+                    <div className="bg-indigo-950/30 p-2 rounded-lg border border-indigo-800/30 text-[11px] text-indigo-200 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                      <div>
+                        <span className="font-medium text-indigo-300">프론트 팁:</span> {place.tip}
+                      </div>
                     </div>
 
                     {/* 태그 */}

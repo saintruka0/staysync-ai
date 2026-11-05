@@ -146,11 +146,11 @@ export default function DifyChatWidget() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-2xl shadow-blue-900/50 hover:scale-105 transition-all duration-200 group border border-blue-400/40"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white rounded-full shadow-2xl shadow-blue-900/50 hover:scale-105 motion-safe:transition-transform motion-reduce:transition-none duration-200 group border border-blue-400/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           title="Dify 모텔 AI 어시스턴트 열기"
         >
           <div className="relative">
-            <Sparkles className="w-5 h-5 text-indigo-200 animate-pulse" />
+            <Sparkles className="w-5 h-5 text-indigo-200 motion-safe:animate-pulse" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-slate-900"></span>
           </div>
           <span className="text-xs font-bold tracking-tight">모텔 AI 어시스턴트</span>
@@ -160,7 +160,7 @@ export default function DifyChatWidget() {
       {/* 챗봇 창 */}
       {isOpen && (
         <div
-          className={`fixed bottom-6 right-6 z-40 bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-300 ${
+          className={`fixed bottom-6 right-6 z-40 bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl motion-safe:transition-opacity motion-reduce:transition-none duration-300 ${
             isExpanded ? 'w-[90vw] md:w-[600px] h-[80vh]' : 'w-[92vw] sm:w-[420px] h-[580px]'
           }`}
         >
@@ -267,8 +267,8 @@ export default function DifyChatWidget() {
                   <Bot className="w-3.5 h-3.5" />
                 </div>
                 <div className="p-3 bg-slate-800/80 rounded-2xl border border-slate-700/60 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-                  <span className="text-[11px] text-slate-300">Dify 워크플로우 응답 생성 중...</span>
+                  <span className="w-2 h-2 rounded-full bg-indigo-400 motion-safe:animate-ping"></span>
+                  <span className="text-[11px] text-slate-300">Dify 워크플로우 응답 생성 중…</span>
                 </div>
               </div>
             )}
@@ -282,7 +282,7 @@ export default function DifyChatWidget() {
                 key={idx}
                 onClick={() => handleSend(q)}
                 disabled={loading}
-                className="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/70 transition shrink-0"
+                className="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-slate-300 hover:text-white border border-slate-700/70 transition-colors shrink-0"
               >
                 {q}
               </button>
