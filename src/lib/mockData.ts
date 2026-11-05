@@ -655,9 +655,9 @@ export const INITIAL_ROOM_LOGS: RoomActivityLog[] = [
 ];
 
 export const USERS: UserAccount[] = [
-  { id: 'u1', username: 'admin', name: '김점주 (대표)', role: 'admin', phone: '010-1111-2222' },
-  { id: 'u2', username: 'front1', name: '박직원 (오후 프론트)', role: 'front', phone: '010-3333-4444' },
-  { id: 'u3', username: 'clean1', name: '김이모 (하우스키핑)', role: 'housekeeping', phone: '010-5555-6666' },
+  { id: 'u1', username: 'admin', password: 'password123', name: '김점주 (대표)', role: 'admin', phone: '010-1111-2222' },
+  { id: 'u2', username: 'front1', password: 'password123', name: '박직원 (오후 프론트)', role: 'front', phone: '010-3333-4444' },
+  { id: 'u3', username: 'clean1', password: 'password123', name: '김이모 (하우스키핑)', role: 'housekeeping', phone: '010-5555-6666' },
 ];
 
 export const MOTEL_FOOD_PLACES = [

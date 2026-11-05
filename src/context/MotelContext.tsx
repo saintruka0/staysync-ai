@@ -38,12 +38,30 @@ interface MotelContextType {
   amenities: AmenityRequest[];
   callLogs: ExtensionCallLog[];
   roomLogs: RoomActivityLog[];
-  currentUser: UserAccount;
+  users: UserAccount[];
+  currentUser: UserAccount | null;
+  isAuthenticated: boolean;
   toasts: ToastNotification[];
   dismissToast: (id: string) => void;
   setCurrentRole: (role: UserRole) => void;
   lastCheckedOutRoom: { roomNumber: string; data: Partial<Room> } | null;
   undoCheckout: () => void;
+
+  // Auth methods
+  login: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  register: (data: {
+    username: string;
+    password: string;
+    name: string;
+    role: UserRole;
+    phone: string;
+  }) => Promise<{ success: boolean; error?: string }>;
+  logout: () => void;
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
+  authMode: 'login' | 'register';
+  setAuthMode: (mode: 'login' | 'register') => void;
+  addUserAccount: (user: Omit<UserAccount, 'id'> & { password?: string }) => Promise<{ success: boolean; error?: string }>;
 
   // Actions
   addRoomLog: (
@@ -87,7 +105,20 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
   const [amenities, setAmenities] = useState<AmenityRequest[]>(INITIAL_AMENITIES);
   const [callLogs, setCallLogs] = useState<ExtensionCallLog[]>(INITIAL_CALL_LOGS);
   const [roomLogs, setRoomLogs] = useState<RoomActivityLog[]>(INITIAL_ROOM_LOGS);
-  const [currentUser, setCurrentUser] = useState<UserAccount>(USERS[1]); // 기본 프론트 직원
+  const [users, setUsers] = useState<UserAccount[]>(USERS);
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('staysync_user');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {}
+      }
+    }
+    return USERS[1]; // 기본 프론트 직원
+  });
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
   const [lastCheckedOutRoom, setLastCheckedOutRoom] = useState<{ roomNumber: string; data: Partial<Room> } | null>(null);
 
@@ -109,7 +140,7 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
       title,
       description,
       timestamp: timeStr,
-      actor: actor || currentUser.name,
+      actor: actor || (currentUser ? currentUser.name : '시스템'),
       badgeText,
     };
     setRoomLogs((prev) => [newLog, ...prev]);
@@ -129,6 +160,15 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
       .then((data) => {
         if (Array.isArray(data.reservations) && data.reservations.length > 0) {
           setReservations(data.reservations);
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/auth/users')
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data.users) && data.users.length > 0) {
+          setUsers(data.users);
         }
       })
       .catch(() => {});
@@ -153,9 +193,96 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
+  const login = async (username: string, password: string) => {
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, error: data.error || '로그인에 실패했습니다.' };
+      }
+      setCurrentUser(data.user);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('staysync_user', JSON.stringify(data.user));
+      }
+      addToast('로그인 성공', `${data.user.name}님 환영합니다!`, 'success');
+      setIsAuthModalOpen(false);
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || '네트워크 오류가 발생했습니다.' };
+    }
+  };
+
+  const register = async (userData: {
+    username: string;
+    password: string;
+    name: string;
+    role: UserRole;
+    phone: string;
+  }) => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, error: data.error || '회원가입에 실패했습니다.' };
+      }
+      setUsers((prev) => [...prev, data.user]);
+      setCurrentUser(data.user);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('staysync_user', JSON.stringify(data.user));
+      }
+      addToast('계정 생성 완료', `${data.user.name} 계정이 생성 및 로그인되었습니다.`, 'success');
+      setIsAuthModalOpen(false);
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || '네트워크 오류가 발생했습니다.' };
+    }
+  };
+
+  const logout = () => {
+    const prevName = currentUser?.name || '사용자';
+    setCurrentUser(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('staysync_user');
+    }
+    addToast('로그아웃', `${prevName}님이 로그아웃되었습니다.`, 'info');
+  };
+
+  const addUserAccount = async (userData: Omit<UserAccount, 'id'> & { password?: string }) => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...userData,
+          password: userData.password || 'password123',
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, error: data.error || '직원 계정 등록에 실패했습니다.' };
+      }
+      setUsers((prev) => [...prev, data.user]);
+      addToast('직원 등록 완료', `${data.user.name} 계정이 신규 등록되었습니다.`, 'success');
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || '네트워크 오류가 발생했습니다.' };
+    }
+  };
+
   const setCurrentRole = (role: UserRole) => {
-    const matched = USERS.find((u) => u.role === role) || USERS[0];
+    const matched = users.find((u) => u.role === role) || USERS.find((u) => u.role === role) || USERS[0];
     setCurrentUser(matched);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('staysync_user', JSON.stringify(matched));
+    }
     addToast('역할 전환', `${matched.name} (${matched.role.toUpperCase()}) 계정으로 전환되었습니다.`, 'info');
   };
 
@@ -191,7 +318,7 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
               'status',
               '투숙객 퇴실 (체크아웃)',
               `${r.guestName} 고객님 퇴실 처리 완료 (상태: 빈방 전환)`,
-              currentUser.name,
+              currentUser?.name || '프론트 데스크',
               '체크아웃'
             );
           } else {
@@ -202,7 +329,7 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
               cleanerName
                 ? `담당 룸메이드: ${cleanerName} (청소 작업 진행)`
                 : `상태가 [${statusLabels[status] || status}]로 업데이트되었습니다.`,
-              cleanerName || currentUser.name,
+              cleanerName || currentUser?.name || '프론트 데스크',
               statusLabels[status]
             );
           }
@@ -236,7 +363,7 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
       'status',
       '퇴실 실행 취소 (복원)',
       `${data.guestName ? `${data.guestName} 고객님 ` : ''}투숙 정보가 정상 복원되어 [재실중] 상태로 재전환되었습니다.`,
-      currentUser.name,
+      currentUser?.name || '프론트 데스크',
       '퇴실 취소'
     );
     setLastCheckedOutRoom(null);
@@ -254,7 +381,7 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
       'note',
       '특이사항 메모 등록',
       note.trim(),
-      currentUser.name,
+      currentUser?.name || '프론트 데스크',
       '메모 추가'
     );
     addToast('특이사항 메모', `${roomNumber}호에 메모가 저장되었습니다.`, 'info');
@@ -423,7 +550,7 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
       'reservation',
       `[${res.platform}] 예약 고객 입실 (체크인)`,
       `${res.guestName} (${res.phone}) ${res.roomType} 배정 입실 완료`,
-      currentUser.name,
+      currentUser?.name || '프론트 데스크',
       '체크인'
     );
   };
@@ -547,7 +674,7 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
         'amenity',
         '비품 전달 완료',
         `${target.item} (${target.quantity}개) 고객 전달 완료 처리되었습니다.`,
-        currentUser.name,
+        currentUser?.name || '프론트 데스크',
         '전달 완료'
       );
     }
@@ -608,7 +735,17 @@ export function MotelProvider({ children }: { children: React.ReactNode }) {
         amenities,
         callLogs,
         roomLogs,
+        users,
         currentUser,
+        isAuthenticated: !!currentUser,
+        login,
+        register,
+        logout,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
+        authMode,
+        setAuthMode,
+        addUserAccount,
         toasts,
         dismissToast,
         setCurrentRole,

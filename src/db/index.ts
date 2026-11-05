@@ -108,11 +108,18 @@ export async function initDatabase() {
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       username TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL DEFAULT 'password123',
       name TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'front',
       phone TEXT NOT NULL
     );
   `);
+
+  try {
+    await client.execute(`ALTER TABLE users ADD COLUMN password TEXT NOT NULL DEFAULT 'password123'`);
+  } catch {
+    // 이미 존재하는 컬럼
+  }
 
   await client.execute(`
     CREATE TABLE IF NOT EXISTS room_logs (
@@ -205,8 +212,8 @@ export async function initDatabase() {
   if (Number(userCount.rows[0].cnt) === 0) {
     for (const u of USERS) {
       await client.execute({
-        sql: `INSERT INTO users (id, username, name, role, phone) VALUES (?, ?, ?, ?, ?)`,
-        args: [u.id, u.username, u.name, u.role, u.phone],
+        sql: `INSERT INTO users (id, username, password, name, role, phone) VALUES (?, ?, ?, ?, ?, ?)`,
+        args: [u.id, u.username, u.password || 'password123', u.name, u.role, u.phone],
       });
     }
   }

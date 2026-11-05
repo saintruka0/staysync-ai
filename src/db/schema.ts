@@ -79,6 +79,7 @@ export const callLogsTable = sqliteTable('call_logs', {
 export const usersTable = sqliteTable('users', {
   id: text('id').primaryKey(),
   username: text('username').notNull().unique(),
+  password: text('password').notNull().default('password123'),
   name: text('name').notNull(),
   role: text('role').notNull().default('front'),
   phone: text('phone').notNull(),

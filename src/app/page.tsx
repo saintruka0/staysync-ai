@@ -10,6 +10,7 @@ import DifyChatWidget from '@/components/DifyChatWidget';
 import ExtensionCallSimulator from '@/components/ExtensionCallSimulator';
 import UserManagementModal from '@/components/UserManagementModal';
 import DifyDiagnosticsModal from '@/components/DifyDiagnosticsModal';
+import AuthModal from '@/components/AuthModal';
 import { useMotel } from '@/context/MotelContext';
 import {
   BedDouble,
@@ -171,6 +172,9 @@ export default function Home() {
       {showDifyDiagnostics && (
         <DifyDiagnosticsModal onClose={() => setShowDifyDiagnostics(false)} />
       )}
+
+      {/* 사용자 로그인 및 계정 생성(회원가입) 모달 */}
+      <AuthModal />
     </div>
   );
 }

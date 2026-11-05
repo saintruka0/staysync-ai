@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useMotel } from '@/context/MotelContext';
-import { Building2, QrCode, Sparkles, User, ShieldCheck, PhoneCall, RefreshCw } from 'lucide-react';
+import { Building2, QrCode, Sparkles, User, ShieldCheck, PhoneCall, RefreshCw, LogIn, LogOut } from 'lucide-react';
 import { UserRole } from '@/types/motel';
 
 interface HeaderProps {
@@ -13,7 +13,17 @@ interface HeaderProps {
 }
 
 export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOpenDifyDiagnostics }: HeaderProps) {
-  const { rooms, inquiries, amenities, currentUser, setCurrentRole, syncReservations } = useMotel();
+  const {
+    rooms,
+    inquiries,
+    amenities,
+    currentUser,
+    setCurrentRole,
+    syncReservations,
+    logout,
+    setIsAuthModalOpen,
+    setAuthMode,
+  } = useMotel();
 
   const occupiedCount = rooms.filter((r) => r.status === 'occupied').length;
   const cleaningCount = rooms.filter((r) => r.status === 'cleaning').length;
@@ -129,37 +139,69 @@ export default function Header({ onOpenCallSimulator, onOpenUserManagement, onOp
             <span className="hidden sm:inline">청소 모바일</span>
           </Link>
 
-          {/* 사용자 역할 스위처 */}
-          <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
-            <div className="flex flex-col items-end text-right">
-              <span className="text-xs font-semibold text-slate-200 flex items-center gap-1">
-                <User className="w-3 h-3 text-slate-400" />
-                {currentUser.name}
-              </span>
-              <span className="text-[10px] text-slate-400 font-mono">
-                {currentUser.role}
-              </span>
-            </div>
-            <select
-              value={currentUser.role}
-              onChange={(e) => setCurrentRole(e.target.value as UserRole)}
-              className="bg-slate-800 text-slate-200 text-xs border border-slate-700 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer"
-            >
-              <option value="admin">점주(Admin)</option>
-              <option value="front">프론트(Front)</option>
-              <option value="housekeeping">청소(Clean)</option>
-            </select>
-
-            {currentUser.role === 'admin' && onOpenUserManagement && (
-              <button
-                onClick={onOpenUserManagement}
-                className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
-                title="직원 및 권한 관리"
+          {/* 사용자 역할 스위처 & 프로필 / 로그인 버튼 */}
+          {currentUser ? (
+            <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+              <div className="flex flex-col items-end text-right">
+                <span className="text-xs font-semibold text-slate-200 flex items-center gap-1">
+                  <User className="w-3 h-3 text-slate-400" />
+                  {currentUser.name}
+                </span>
+                <span className="text-[10px] text-slate-400 font-mono">
+                  {currentUser.role}
+                </span>
+              </div>
+              <select
+                value={currentUser.role}
+                onChange={(e) => setCurrentRole(e.target.value as UserRole)}
+                className="bg-slate-800 text-slate-200 text-xs border border-slate-700 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer"
               >
-                <ShieldCheck className="w-4 h-4 text-indigo-400" />
+                <option value="admin">점주(Admin)</option>
+                <option value="front">프론트(Front)</option>
+                <option value="housekeeping">청소(Clean)</option>
+              </select>
+
+              {currentUser.role === 'admin' && onOpenUserManagement && (
+                <button
+                  onClick={onOpenUserManagement}
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 transition-colors"
+                  title="직원 및 권한 관리"
+                >
+                  <ShieldCheck className="w-4 h-4 text-indigo-400" />
+                </button>
+              )}
+
+              <button
+                onClick={logout}
+                className="p-1.5 text-slate-400 hover:text-rose-300 rounded-lg hover:bg-slate-800 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 transition-colors"
+                title="로그아웃"
+              >
+                <LogOut className="w-4 h-4" />
               </button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 pl-2 border-l border-slate-800">
+              <button
+                onClick={() => {
+                  setAuthMode('login');
+                  setIsAuthModalOpen(true);
+                }}
+                className="flex items-center gap-1.5 text-xs bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold px-3 py-1.5 rounded-lg border border-blue-400/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 shadow-md shadow-blue-900/30 cursor-pointer"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>로그인</span>
+              </button>
+              <button
+                onClick={() => {
+                  setAuthMode('register');
+                  setIsAuthModalOpen(true);
+                }}
+                className="flex items-center gap-1 text-xs bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-semibold px-2.5 py-1.5 rounded-lg border border-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 cursor-pointer"
+              >
+                <span>회원가입</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>
